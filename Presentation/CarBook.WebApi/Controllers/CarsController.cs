@@ -34,7 +34,7 @@ namespace CarBook.WebApi.Controllers
             var values = await _getCarQueryHandler.Handle();
             return Ok(values);
         }
-        [HttpGet("(id)")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCar(int id)
         {
             var value = await _getCarByIdQueryHandler.Handle(new GetCarByIdQuery(id));
@@ -46,7 +46,7 @@ namespace CarBook.WebApi.Controllers
             await _createCarCommandHandler.Handle(command);
             return Ok("Araba Bilgisi Eklendi");
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCar(int id)
         {
             await _removeCarCommandHandler.Handle(new RemoveCarCommand(id));
