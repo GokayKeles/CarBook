@@ -37,7 +37,7 @@ namespace CarBook.WebApi.Controllers
 			return Ok("Blog Başarıyla eklendi");
 		}
 
-		[HttpDelete]
+		[HttpDelete("{id}")]
 		public async Task<IActionResult> RemoveBlog(int id)
 		{
 			await _mediator.Send(new RemoveBlogCommand(id));

@@ -30,7 +30,7 @@ namespace CarBook.WebApi.Controllers
             var values = await _getCategoryQueryHandler.Handle();
             return Ok(values);
         }
-        [HttpGet("(id)")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetCategory(int id)
         {
             var value = await _getCategoryByIdQueryHandler.Handle(new GetCategoryByIdQuery(id));
@@ -42,7 +42,7 @@ namespace CarBook.WebApi.Controllers
             await _createCategoryCommandHandler.Handle(command);
             return Ok("Kategori Bilgisi Eklendi");
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveCategory(int id)
         {
             await _removeCategoryCommandHandler.Handle(new RemoveCategoryCommand(id));

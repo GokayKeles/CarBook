@@ -32,7 +32,7 @@ namespace CarBook.WebApi.Controllers
             var values = await _getBrandQueryHandler.Handle();
             return Ok(values);
         }
-        [HttpGet("(id)")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetBrand(int id)
         {
             var value = await _getBrandByIdQueryHandler.Handle(new GetBrandByIdQuery(id));
@@ -44,7 +44,7 @@ namespace CarBook.WebApi.Controllers
             await _createBrandCommandHandler.Handle(command);
             return Ok("Marka Bilgisi Eklendi");
         }
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<IActionResult> RemoveBrand(int id)
         {
             await _removeBrandCommandHandler.Handle(new RemoveBrandCommand(id));
