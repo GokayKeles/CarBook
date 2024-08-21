@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using CarBook.Application.Features.CQRS.Commands.CarCommands;
 using CarBook.Application.Features.CQRS.Handlers.CarHandlers;
 using CarBook.Application.Features.CQRS.Queries.CarQueries;
+using MediatR;
+using CarBook.Application.Features.Mediator.Queries.StatisticsQueries;
 
 namespace CarBook.WebApi.Controllers
 {

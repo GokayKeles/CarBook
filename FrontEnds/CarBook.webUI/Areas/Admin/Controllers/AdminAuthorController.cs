@@ -28,6 +28,7 @@ namespace CarBook.webUI.Areas.Admin.Controllers
                 }
                 return View();
             }
+
             [HttpGet]
             [Route("CreateAuthor")]
             public IActionResult CreateAuthor()
