@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using CarBook.Dto.BlogDtos;
-using CarBook.Dto.TestimonialDtos;
 
 namespace CarBook.webUI.ViewComponents.BlogViewComponents
 {

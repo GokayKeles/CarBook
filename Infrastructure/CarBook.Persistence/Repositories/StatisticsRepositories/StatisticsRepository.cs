@@ -77,6 +77,12 @@ namespace CarBook.Persistence.Repositories.StatisticsRepositories
             return value;
         }
 
+        public int GetTestimonialCount()
+        {
+            var value = _context.Testimonials.Count();
+            return value;
+        }
+
         public int GetBrandCount()
         {
             var value = _context.Brands.Count();

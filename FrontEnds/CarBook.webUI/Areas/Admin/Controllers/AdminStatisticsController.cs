@@ -69,6 +69,16 @@ namespace CarBook.webUI.Areas.Admin.Controllers
             }
             #endregion
 
+            #region TestimonialCount
+            var responseMessage17 = await client.GetAsync("https://localhost:7026/api/Statistics/GetTestimonialCount");
+            if (responseMessage17.IsSuccessStatusCode)
+            {
+                var jsonData17 = await responseMessage17.Content.ReadAsStringAsync();
+                var values17 = JsonConvert.DeserializeObject<ResultStatisticsDto>(jsonData17);
+                ViewBag.v17 = values17.TestimonialCount;
+            }
+            #endregion
+
             #region AvgRentPriceForDailyCount
             var responseMessage6 = await client.GetAsync("https://localhost:7026/api/Statistics/GetAvgRentPriceForDaily");
             if (responseMessage6.IsSuccessStatusCode)
