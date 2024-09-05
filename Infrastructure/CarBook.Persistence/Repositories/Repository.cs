@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using CarBook.Application.Interfaces;
 using CarBook.Persistence.Context;
+using System.Linq.Expressions;
 
 namespace CarBook.Persistence.Repositories
 {
@@ -27,6 +28,11 @@ namespace CarBook.Persistence.Repositories
         public async Task<List<T>> GetAllAsync()
         {
             return await _context.Set<T>().ToListAsync();
+        }
+
+        public async Task<T?> GetByFilterAsync(Expression<Func<T, bool>> filter)
+        {
+            return await _context.Set<T?>().SingleOrDefaultAsync(filter);
         }
 
         public async Task<T> GetByIdAsync(int id)

@@ -16,6 +16,7 @@ using CarBook.Application.Interfaces.ReviewInterfaces;
 using CarBook.Application.Interfaces.StatisticsInterfaces;
 using CarBook.Application.Interfaces.TagCloudInterfaces;
 using CarBook.Application.Services;
+using CarBook.Application.Tools;
 using CarBook.Application.Validators.ReviewValidator;
 using CarBook.Persistence.Context;
 using CarBook.Persistence.Repositories;
@@ -43,10 +44,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJw
     opt.RequireHttpsMetadata = false;
     opt.TokenValidationParameters = new TokenValidationParameters
     {
-        ValidAudience = "https://localhost",
-        ValidIssuer = "https://localhost",
+        ValidAudience = JwtTokenDefaults.ValidAudience,
+        ValidIssuer = JwtTokenDefaults.ValidIssuer,
         ClockSkew = TimeSpan.Zero,
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("carbookcarbook59")),
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(JwtTokenDefaults.Key)),
         ValidateLifetime = true,
         ValidateIssuerSigningKey = true
     };
@@ -127,7 +128,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
