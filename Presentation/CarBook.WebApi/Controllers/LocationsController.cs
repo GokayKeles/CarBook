@@ -3,9 +3,11 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using CarBook.Application.Features.Mediator.Commands.LocationCommands;
 using CarBook.Application.Features.Mediator.Queries.LocationQueries;
+using Microsoft.AspNetCore.Authorization;
 
 namespace CarBook.WebApi.Controllers
 {
+    [Authorize(Roles ="Admin")]
     [Route("api/[controller]")]
     [ApiController]
     public class LocationsController : ControllerBase

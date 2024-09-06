@@ -14,10 +14,6 @@ namespace CarBook.webUI.Controllers
         {
             _httpClientFactory = httpClientFactory;
         }
-        public IActionResult Index()
-        {
-            return View();
-        }
 
         [HttpGet]
         public IActionResult CreateAppUser()
