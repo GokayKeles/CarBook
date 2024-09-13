@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\Frontends\CarBook.Dto\CarBook.Dto.csproj" />
     <ProjectReference Include="..\..\Infrastructure\CarBook.Persistence\CarBook.Persistence.csproj" />
   </ItemGroup>
 

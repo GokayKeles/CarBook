@@ -1,4 +1,4 @@
-using CarBook.Application.Features.CQRS.Handlers.AboutHandlers;
+﻿using CarBook.Application.Features.CQRS.Handlers.AboutHandlers;
 using CarBook.Application.Features.CQRS.Handlers.BannerHandlers;
 using CarBook.Application.Features.CQRS.Handlers.BrandHandlers;
 using CarBook.Application.Features.CQRS.Handlers.CarHandlers;
@@ -31,17 +31,20 @@ using CarBook.Persistence.Repositories.ReviewRepositories;
 using CarBook.Persistence.Repositories.StatisticsRepositories;
 using CarBook.Persistence.Repositories.TagCloudRepositories;
 using CarBook.WebApi.Hubs;
+using CarBook.WebApi.Middleware;
 using FluentValidation;
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using System.Net;
 using System.Reflection;
 using System.Text;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddHttpClient();
 
-builder.Services.AddCors(opt =>
+builder.Services.AddCors(opt => //signalr
 {
     opt.AddPolicy("CorsPolicy", builder =>
     {
@@ -55,6 +58,38 @@ builder.Services.AddSignalR();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(opt =>
 {
+    opt.Events = new JwtBearerEvents
+    {
+        OnChallenge = context => //401 error expection
+        {
+            context.HandleResponse();
+
+            context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            context.Response.ContentType = "application/json";
+
+            var result = JsonSerializer.Serialize(new
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = "Bu bilgiye ulaşmak için yetkiniz yok."
+            });
+
+            return context.Response.WriteAsync(result);
+        },
+
+        OnForbidden = context => //403 error expection
+        {
+            context.Response.StatusCode = (int)HttpStatusCode.Forbidden;
+            context.Response.ContentType = "application/json";
+
+            var result = JsonSerializer.Serialize(new
+            {
+                StatusCode = context.Response.StatusCode,
+                Message = "Lütfen admin girişi yapınız.Bu bilgiye ulasmak için yetkiniz yok."
+            });
+
+            return context.Response.WriteAsync(result);
+        }
+    };
     opt.RequireHttpsMetadata = false;
     opt.TokenValidationParameters = new TokenValidationParameters
     {
@@ -145,6 +180,8 @@ if (app.Environment.IsDevelopment())
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();
+
+app.UseMiddleware<ExceptionMiddleware>();
 app.UseAuthentication();
 app.UseAuthorization();
 

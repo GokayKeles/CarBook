@@ -14,12 +14,12 @@ namespace CarBook.webUI.Areas.Admin.Controllers
             _httpClientFactory = httpClientFactory;
         }
 
-        [Route("Index/{id}")]
-        public async Task<IActionResult> Index(int id)
+        [Route("Index/{blogId}")]
+        public async Task<IActionResult> Index(int blogId)
         {
-            ViewBag.v = id;
+            ViewBag.v = blogId;
             var client = _httpClientFactory.CreateClient();
-            var responseMessage = await client.GetAsync($"https://localhost:7026/api/Comments/CommentListByBlog/{id}");
+            var responseMessage = await client.GetAsync($"https://localhost:7026/api/Comments/CommentListByBlog/{blogId}");
             if (responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
@@ -28,5 +28,33 @@ namespace CarBook.webUI.Areas.Admin.Controllers
             }
             return View();
         }
+        [Route("RemoveComment/{id}")]
+public async Task<IActionResult> RemoveComment(int id)
+{
+    var client = _httpClientFactory.CreateClient();
+    
+    // Yorum Silme
+    
+    var getResponse = await client.GetAsync($"https://localhost:7026/api/Comments/{id}");
+    if (getResponse.IsSuccessStatusCode)
+    {
+        // Yorumları alma isteği
+        
+        var deleteResponse = await client.DeleteAsync($"https://localhost:7026/api/Comments/{id}");
+        if (deleteResponse.IsSuccessStatusCode)
+        {
+            var commentsJson = await getResponse.Content.ReadAsStringAsync();
+            var comments = JsonConvert.DeserializeObject<ResultCommentDto>(commentsJson);
+            
+            // Yorumları ViewBag'e atıyoruz
+            ViewBag.blogId = comments.BlogID;
+            
+            return RedirectToAction("Index", "AdminComment", new { area = "Admin", ViewBag.blogId });
+        }
+    }
+    
+    return View();
+}
+
     }
 }

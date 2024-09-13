@@ -54,13 +54,14 @@ namespace CarBook.webUI.Controllers
 		[HttpPost]
         public async Task<IActionResult> AddComment(CreateCommentDto createCommentDto)
         {
+			ViewBag.blogid = createCommentDto.BlogID;
             var client = _httpClientFactory.CreateClient();
             var jsonData = JsonConvert.SerializeObject(createCommentDto);
             StringContent stringContent = new StringContent(jsonData, Encoding.UTF8, "application/json");
             var responseMessage = await client.PostAsync("https://localhost:7026/api/Comments/CreateCommentWithMediator", stringContent);
             if (responseMessage.IsSuccessStatusCode)
             {
-                return RedirectToAction("Index", "Default");
+                return RedirectToAction("BlogDetail", "Blog", new {id= ViewBag.blogid });
             }
             return View();
         }

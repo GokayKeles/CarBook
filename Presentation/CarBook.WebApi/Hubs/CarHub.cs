@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using CarBook.Dto.StatisticsDtos;
+using Microsoft.AspNetCore.SignalR;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -20,7 +21,7 @@ namespace CarBook.WebApi.Hubs
             if(responseMessage.IsSuccessStatusCode)
             {
                 var jsonData = await responseMessage.Content.ReadAsStringAsync();
-                var values = JsonConvert.DeserializeObject<CarBook.Dto.StatisticsDtos.ResultStatisticsDto>(jsonData);
+                var values = JsonConvert.DeserializeObject<ResultStatisticsDto>(jsonData);
                 await Clients.All.SendAsync("ReceiveCarCount", values.CarCount);
             }
             else
